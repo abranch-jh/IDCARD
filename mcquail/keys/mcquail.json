@@ -1,0 +1,58 @@
+{
+"Spatial": {
+ "animal": "animal",
+ "trial": "trial_num_cum_s_",
+ "date": "date_s_",
+ "time": "time_s_",
+ "protocol_time": "protocol_time",
+ "block": "block_num_s_",
+ "datetime_trial": "datetime_trial_s_",
+ "EscapeLatency(s)": "duration_s_",
+ "DistanceMoved(cm)": "dist_s_",
+ "Velocity(cm/s)": "mean_speed_s_", 
+ "TotalSearchError(cm*s)": "cum_dist_raw_s_",
+ "MeanSearchError(cm)": "cum_dist_mean_s_",
+ "MeanSearchError*ProbeWeight": "search_error_probe_weighted"
+},
+
+"Visible": {
+ "animal": "animal",
+ "trial": "trial_num_cum_c_",
+ "date": "date_c_",
+ "time": "time_c_",
+ "protocol_time": "protocol_time",
+ "datetime_trial": "datetime_trial_c_",
+ "block": "block_num_c_",
+ "datetime_trial": "datetime_trial_c_",
+ "EscapeLatency(s)": "duration_c_",
+ "DistanceMoved(cm)": "dist_c_",
+ "Velocity(cm/s)": "mean_speed_c_", 
+ "TotalSearchError(cm*s)": "cum_dist_raw_c_",
+ "MeanSearchError(cm)": "cum_dist_mean_c_"
+},
+
+"Probe": {
+ "animal": "animal",
+ "trial": "trial_num_cum_p_",
+ "date": "date_p_",
+ "time": "time_p_",
+ "protocol_time": "protocol_time",
+ "block": "block_num_p_",
+ "datetime_trial": "datetime_trial_p_",
+ "EscapeLatency(s)": "duration_c_",
+ "DistanceMoved(cm)": "dist_c_",
+ "Velocity(cm/s)": "mean_speed_c_", 
+ "TotalSearchError(cm*s)": "cum_dist_raw_c_",
+ "MeanSearchError(cm)": "cum_dist_mean_c_"
+},
+
+"Info": {
+    "date_received": "date_received", 
+    "age_mo": "age_mo",
+    "genotype": "genotype",
+    "strain": "strain",
+    "sex": "sex",
+    "rat_source": "rat_source",
+    "calculated_index": "calculated_index"
+}
+}

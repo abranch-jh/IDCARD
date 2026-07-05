@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Mar 26 10:37:11 2026
+
+@author: abranch6
+"""
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "IDCARD"
+version = "0.1.0"
+description = "IDCARD package"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{name = "Your Name"}]
+dependencies = []
+[tool.setuptools]
+packages = ["idcard"]

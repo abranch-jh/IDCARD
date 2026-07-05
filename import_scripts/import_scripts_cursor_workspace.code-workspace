@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../barnes"
+		},
+		{
+			"path": "../burke"
+		},
+		{
+			"path": "../disterhoff"
+		},
+		{
+			"path": "../foster"
+		},
+		{
+			"path": "../gallagher"
+		},
+		{
+			"path": "../mquail"
+		},
+		{
+			"path": "../rapp"
+		}
+	],
+	"settings": {}
+}
