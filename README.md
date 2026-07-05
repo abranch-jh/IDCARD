@@ -28,7 +28,8 @@ datasets collected across multiple laboratories across varying ages and strains.
 systems, naming conventions, file formats, and protocol structure. IDCARD harmonizes those differences at the level of individual trials
 integrated into a single wide-format table and provides an interactive GUI for filtering animals and
 trials, inspecting the data, generating plots, and exporting subsets. This collaborative effort is an outcome of the
-Collaboratory on Research Definitions for Reserve and Resilience in Cognitive Aging and Dementia (4th Workshop) funded by the National Institute on Aging.
+Collaboratory on Research Definitions for Reserve and Resilience in Cognitive Aging and Dementia 4th Workshop (https://reserveandresilience.com/)
+funded by the National Institute on Aging.
 
 
 
