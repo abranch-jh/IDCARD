@@ -3,21 +3,20 @@
 
 ## Table of Contents
 
-1. [Overview](#overview)
-2. [Installation](#installation)
-3. [Project Structure](#project-structure)
-4. [Data Pipeline Overview](#data-pipeline-overview)
-5. [Running the Import Scripts](#running-the-import-scripts)
-6. [Launching the GUI](#launching-the-gui)
-7. [GUI Walkthrough](#gui-walkthrough)
-   - [Open Dialog](#open-dialog)
-   - [Filter Panel](#filter-panel)
-   - [Data Table](#data-table)
-   - [Plotting](#plotting)
-   - [Saving Data](#saving-data)
-8. [Key/Configuration Files](#keyconfiguration-files)
-9. [Adding a New Lab or Cohort](#adding-a-new-lab-or-cohort)
-10. [Troubleshooting](#troubleshooting)
+   - [Overview](#overview)
+   - [Installation](#installation)
+   - [Project Structure](#project-structure)
+   - [Data Pipeline Overview](#data-pipeline-overview)
+   - [Running the Import Scripts](#running-the-import-scripts)
+   - [Launching the GUI](#launching-the-gui)
+   - [GUI Walkthrough](#gui-walkthrough)
+      - [Open Dialog](#open-dialog)
+      - [Filter Panel](#filter-panel)
+      - [Data Table](#data-table)
+      - [Plotting](#plotting)
+      - [Saving Data](#saving-data)
+   - [Key/Configuration Files](#keyconfiguration-files)
+   - [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -28,7 +27,10 @@ Python toolkit for preprocessing, integrating, and visualizing rodent Morris Wat
 datasets collected across multiple laboratories across varying ages and strains. Each lab may use different acquisition
 systems, naming conventions, file formats, and protocol structure. IDCARD harmonizes those differences at the level of individual trials
 integrated into a single wide-format table and provides an interactive GUI for filtering animals and
-trials, inspecting the data, generating plots, and exporting subsets.
+trials, inspecting the data, generating plots, and exporting subsets. This collaborative effort is an outcome of the
+Collaboratory on Research Definitions for Reserve and Resilience in Cognitive Aging and Dementia (4th Workshop) funded by the National Institute on Aging.
+
+
 
 ### Included Lab Datasets
 
