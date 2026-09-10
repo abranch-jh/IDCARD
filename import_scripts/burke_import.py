@@ -16,7 +16,10 @@ from functools import reduce
 import sys
 from pathlib import Path
 # import Path
-from import_tools import *
+try:
+    from import_tools import *
+except ModuleNotFoundError:
+    from import_scripts.import_tools import *
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -300,20 +303,20 @@ if genotype_diet_file and os.path.isfile(genotype_diet_file):
             if isinstance(df, pd.DataFrame) and not df.empty and "animal" in df.columns:
                 wide_by_cohort[cohort] = df.merge(genotype_df, on="animal", how="left")
 
-    
-wide_by_cohort['pi_name'] = 'Burke'
-wide_by_cohort['protocol_id'] = 'Burke_WM_1'
-wide_by_cohort['lights_on'] = '7:00'
-wide_by_cohort['lights_off'] = '19:00'
-wide_by_cohort['index_calc_type'] = 'Gall_SearchError'
-wide_by_cohort['tracking_system'] = 'Watermaze'
-wide_by_cohort['pool_diam'] = '184'
-wide_by_cohort['rat_source'] = 'NIA'
-wide_by_cohort['sex'] = 'M'
-# wide_by_cohort.dropna(how='all', inplace=True)
-wide_by_cohort = compute_cumulative_time(wide_by_cohort['1'], prefix="datetime_trial_", dropStart=False)
-wide_by_cohort['animal'] = wide_by_cohort['animal'].astype(str) + '.SB'
 
+burke_df = wide_by_cohort["1"]
+burke_df = compute_cumulative_time(burke_df, prefix="datetime_trial_", dropStart=False)
+burke_df["animal"] = burke_df["animal"].astype(str) + ".SB"
+burke_df["pi_name"] = "Burke"
+burke_df["species"] = "rat"
+burke_df["protocol_id"] = "Burke_WM_1"
+burke_df["lights_on"] = "7:00"
+burke_df["lights_off"] = "19:00"
+burke_df["index_calc_type"] = "Gall_SearchError"
+burke_df["tracking_system"] = "Watermaze"
+burke_df["pool_diam"] = "184"
+burke_df["rat_source"] = "NIA"
+burke_df["sex"] = "M"
 
 outpath = current_directory
-wide_by_cohort.to_csv(outpath / "burke.csv", index=False)
+burke_df.to_csv(outpath / "burke.csv", index=False)

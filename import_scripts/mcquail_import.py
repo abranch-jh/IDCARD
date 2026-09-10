@@ -10,7 +10,10 @@ import re
 from pathlib import Path
 import pandas as pd
 from functools import reduce
-from import_tools import *
+try:
+    from import_tools import *
+except ModuleNotFoundError:
+    from import_scripts.import_tools import *
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 current_directory = PROJECT_ROOT / "mcquail"
@@ -365,6 +368,7 @@ wide_final = pd.concat(wide_final.values(), ignore_index=True)
 wide_final = compute_cumulative_time_skip_nans(wide_final, prefix="datetime_trial_", dropStart=False)
 wide_final['animal'] = wide_final['animal'].astype(str) + '.JM'
 wide_final['pi_name'] = 'McQuail'
+wide_final['species'] = 'rat'
 wide_final['protocol_id'] = 'McQuail_WM_1'
 wide_final['lights_on'] = '7:00'
 wide_final['lights_off'] = '19:00'

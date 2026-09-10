@@ -30,7 +30,7 @@ key_file = PROJECT_ROOT / "combined" / "shared_keys" / "shared_keys.json"
 #print(file_list)
 
 meters_per_sec_labs = ['Barnes', 'Rapp', 'Burke']
-cm_per_sec_labs = ['Gallagher', 'McQuail']
+cm_per_sec_labs = ['Gallagher', 'McQuail', 'Moore']
 distance_columns = ['dist', 'speed']
 
 with open(str(key_file), 'r') as f:
@@ -134,6 +134,13 @@ for filepath in file_list:
             lower == 'male', 'M',
             np.where(lower == 'female', 'F', col)
         )
+
+    default_species = 'mouse' if dataset == 'Moore' else 'rat'
+    if 'species' not in df.columns:
+        df = df.copy()
+        df['species'] = default_species
+    else:
+        df['species'] = df['species'].fillna(default_species)
 
     dataframes[name] = df
 

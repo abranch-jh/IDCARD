@@ -1,6 +1,6 @@
 import sys
 from PySide6.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QTimeEdit, QDateEdit, QTableView, QCheckBox, QSpacerItem, QSizePolicy, QFileDialog, QMainWindow, QScrollArea, QFrame, QComboBox)
+    QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QTimeEdit, QDateEdit, QTableView, QCheckBox, QSpacerItem, QSizePolicy, QFileDialog, QMainWindow, QScrollArea, QFrame, QComboBox, QSplitter)
 from PySide6.QtGui import QFont
 from PySide6.QtCore import (QAbstractTableModel, QDate, QTime, Qt)
 import pandas as pd
@@ -8,7 +8,10 @@ import numpy as np
 import os
 import itertools
 import re
-from ..combined import combine_data
+try:
+    from ..combined import combine_data
+except ImportError:
+    from combined import combine_data
 import matplotlib
 matplotlib.use("QtAgg")
 import matplotlib.pyplot as plt
@@ -194,10 +197,6 @@ class CollapsibleGroupBox(QWidget):
         self.content_widget.setLayout(self.content_area)
         self.layout.addWidget(self.content_widget)
 
-        # Add a spacer item for better alignment
-        self.layout.addItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
-
-        # Connect the title label click event
         self.arrow_label.mousePressEvent = self.toggle_content
 
         self.content_widget.setVisible(False)
@@ -271,6 +270,33 @@ class FilterApp(QMainWindow):
 
         self.make_ui()
 
+    @staticmethod
+    def _compute_max_trials(df: pd.DataFrame) -> dict:
+        max_trials = {"s": 0, "p": 0, "c": 0}
+        trial_pat = re.compile(r"_([spc])_(\d+)$", re.IGNORECASE)
+        for col in df.columns:
+            match = trial_pat.search(str(col))
+            if match:
+                trial_type = match.group(1).lower()
+                trial_n = int(match.group(2))
+                if trial_n > max_trials[trial_type]:
+                    max_trials[trial_type] = trial_n
+        return max_trials
+
+    @staticmethod
+    def _parse_watermaze_dates(series: pd.Series) -> pd.Series:
+        """Parse mixed watermaze_date strings (M/D/YY, MM/DD/YYYY, ISO) to timestamps."""
+        parsed = pd.to_datetime(series, errors="coerce")
+        still_na = parsed.isna() & series.notna()
+        if still_na.any():
+            for fmt in ("%m/%d/%Y", "%m/%d/%y", "%Y-%m-%d", "%m-%d-%Y", "%m-%d-%y"):
+                retry = pd.to_datetime(series[still_na], format=fmt, errors="coerce")
+                parsed.loc[still_na] = retry
+                still_na = parsed.isna() & series.notna()
+                if not still_na.any():
+                    break
+        return parsed
+
     @classmethod
     def from_dataframe(cls, df: pd.DataFrame, save_folder: str | None = None):
         self = cls.__new__(cls)
@@ -289,7 +315,7 @@ class FilterApp(QMainWindow):
         self.df = df.copy()
         self.save_folder = save_folder
 
-        self.max_trials = {'s': 0, 'p': 0, 'c': 0}
+        self.max_trials = cls._compute_max_trials(self.df)
         data_cols = [c for c in self.df.columns if "_s_" in c or "_p_" in c or "_c_" in c]
         self.metadata_cols = list(set(self.df.columns) - set(data_cols))
 
@@ -348,6 +374,8 @@ class FilterApp(QMainWindow):
             else:
                 self.df = df
         self.metadata_cols = list(itertools.chain.from_iterable(trial_meta_data_cols))
+        if hasattr(self, "df"):
+            self.max_trials = self._compute_max_trials(self.df)
 
     def make_ui(self): 
 
@@ -392,26 +420,41 @@ class FilterApp(QMainWindow):
         self.save_button.clicked.connect(self.save)
         self.layout_.addWidget(self.save_button)
 
-        # Put filters in a fixed-width panel so the table gets most of the space
+        self.layout_.addStretch(1)
+
         self.filter_panel = QWidget()
         self.filter_panel.setLayout(self.layout_)
-        self.filter_panel.setMaximumWidth(320)
         self.filter_panel.setMinimumWidth(260)
-        self.main_layout.addWidget(self.filter_panel)
+        self.filter_panel.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+
+        filter_scroll = QScrollArea()
+        filter_scroll.setWidget(self.filter_panel)
+        filter_scroll.setWidgetResizable(True)
+        filter_scroll.setFrameShape(QFrame.NoFrame)
+        filter_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        filter_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        filter_scroll.setMinimumWidth(260)
+
         self.table = QTableView()
         self.make_table(self.df)
-        # Prevent table from forcing window width = sum of all column widths (e.g. 758622px)
         self.table.setMinimumSize(0, 0)
         self.table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        # Put table in scroll area so many columns don't force window to 700k+ pixels wide
         scroll = QScrollArea()
         scroll.setFrameShape(QFrame.NoFrame)
         scroll.setWidget(self.table)
         scroll.setWidgetResizable(True)
         scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.main_layout.addWidget(scroll)
-        self.setLayout(self.main_layout)
+
+        splitter = QSplitter(Qt.Horizontal)
+        splitter.addWidget(filter_scroll)
+        splitter.addWidget(scroll)
+        splitter.setChildrenCollapsible(False)
+        splitter.setHandleWidth(8)
+        splitter.setStretchFactor(0, 0)
+        splitter.setStretchFactor(1, 1)
+        splitter.setSizes([360, 840])
+        self.main_layout.addWidget(splitter)
         self.setMinimumSize(400, 300)
 
     def reset_filters(self):
@@ -456,6 +499,12 @@ class FilterApp(QMainWindow):
         self.genotypes = {}
         self.make_multiselect_field(self.genotypes, self.Genotype_h, 'genotype')
         self.rat_metadata_filter.add_content(self.Genotype_h)
+
+        # Species input field
+        self.Species_h = QHBoxLayout()
+        self.species = {}
+        self.make_multiselect_field(self.species, self.Species_h, 'species')
+        self.rat_metadata_filter.add_content(self.Species_h)
         
         # Add the Rat Metadata group box to the main layout
     
@@ -493,51 +542,22 @@ class FilterApp(QMainWindow):
         # Default dates if column missing or parsing fails (QDate(year, month, day))
         default_min_date = QDate(2000, 1, 1)
         default_max_date = QDate(2030, 12, 31)
+        min_date, max_date = default_min_date, default_max_date
 
         if "watermaze_date" in self.df.columns:
-            dates_series = self.df["watermaze_date"].dropna()
-            if len(dates_series) > 0:
-                for sep in ["-", "/", "."]:
-                    try:
-                        min_str = str(dates_series.min()).strip()[:10]
-                        max_str = str(dates_series.max()).strip()[:10]
-                        min_parts = min_str.split(sep)
-                        max_parts = max_str.split(sep)
-                        if len(min_parts) == 3 and len(max_parts) == 3:
-                            # Assume MM-DD-YYYY or YYYY-MM-DD: try both orders
-                            def to_qdate(parts):
-                                a, b, c = int(parts[0]), int(parts[1]), int(parts[2])
-                                if a > 31:  # year first (YYYY-MM-DD)
-                                    return QDate(a, b, c)
-                                if c > 31:  # year last (MM-DD-YYYY)
-                                    return QDate(c, a, b)
-                                return QDate(c, a, b)  # default MM-DD-YYYY
-                            min_date = to_qdate(min_parts)
-                            max_date = to_qdate(max_parts)
-                            self.min_Start_Date_input.setDate(min_date)
-                            self.max_Start_Date_input.setDate(max_date)
-                            self.default_state[self.min_Start_Date_input] = min_date
-                            self.default_state[self.max_Start_Date_input] = max_date
-                            self.min_Start_Date_input.setToolTip(f"Min Date: {min_str}")
-                            self.max_Start_Date_input.setToolTip(f"Max Date: {max_str}")
-                            break
-                    except (ValueError, IndexError):
-                        continue
-                else:
-                    self.min_Start_Date_input.setDate(default_min_date)
-                    self.max_Start_Date_input.setDate(default_max_date)
-                    self.default_state[self.min_Start_Date_input] = default_min_date
-                    self.default_state[self.max_Start_Date_input] = default_max_date
-            else:
-                self.min_Start_Date_input.setDate(default_min_date)
-                self.max_Start_Date_input.setDate(default_max_date)
-                self.default_state[self.min_Start_Date_input] = default_min_date
-                self.default_state[self.max_Start_Date_input] = default_max_date
-        else:
-            self.min_Start_Date_input.setDate(default_min_date)
-            self.max_Start_Date_input.setDate(default_max_date)
-            self.default_state[self.min_Start_Date_input] = default_min_date
-            self.default_state[self.max_Start_Date_input] = default_max_date
+            parsed_dates = self._parse_watermaze_dates(self.df["watermaze_date"]).dropna()
+            if len(parsed_dates) > 0:
+                min_ts = parsed_dates.min()
+                max_ts = parsed_dates.max()
+                min_date = QDate(int(min_ts.year), int(min_ts.month), int(min_ts.day))
+                max_date = QDate(int(max_ts.year), int(max_ts.month), int(max_ts.day))
+                self.min_Start_Date_input.setToolTip(f"Min Date: {min_ts.strftime('%Y-%m-%d')}")
+                self.max_Start_Date_input.setToolTip(f"Max Date: {max_ts.strftime('%Y-%m-%d')}")
+
+        self.min_Start_Date_input.setDate(min_date)
+        self.max_Start_Date_input.setDate(max_date)
+        self.default_state[self.min_Start_Date_input] = min_date
+        self.default_state[self.max_Start_Date_input] = max_date
 
         self.Start_Date_h.addWidget(self.min_Start_Date_label)
         self.Start_Date_h.addWidget(self.min_Start_Date_input)
@@ -1155,6 +1175,7 @@ class FilterApp(QMainWindow):
         subset = self.apply_multiselect_filter(subset, self.sexes, 'sex')
         subset = self.apply_multiselect_filter(subset, self.strains, 'strain')
         subset = self.apply_multiselect_filter(subset, self.genotypes, 'genotype')
+        subset = self.apply_multiselect_filter(subset, self.species, 'species')
         subset = self.apply_multiselect_filter(subset, self.PIs, 'pi')
         subset = self.apply_multiselect_filter(subset, self.housing_type, 'housing')
         subset = self.apply_multiselect_filter(subset, self.animal_source, 'source')
@@ -1170,15 +1191,14 @@ class FilterApp(QMainWindow):
             except ValueError:
                 pass
 
-        #separator = '\\' if "\\" in self.df['watermaze_date'].min() else '/'
-        separator = '-'
-        min_date = self.min_Start_Date_input.date().getDate()
-        min_date_str = str(min_date[1]) + separator + str(min_date[2]) + separator + str(min_date[0])
-        max_date = self.max_Start_Date_input.date().getDate()
-        max_date_str = str(max_date[1]) + separator + str(max_date[2]) + separator + str(max_date[0])
         # Date filter (only if the column exists)
         if "watermaze_date" in subset.columns:
-            mask_valid = subset["watermaze_date"].between(min_date_str, max_date_str)
+            parsed_dates = self._parse_watermaze_dates(subset["watermaze_date"])
+            min_q = self.min_Start_Date_input.date()
+            max_q = self.max_Start_Date_input.date()
+            min_ts = pd.Timestamp(year=min_q.year(), month=min_q.month(), day=min_q.day())
+            max_ts = pd.Timestamp(year=max_q.year(), month=max_q.month(), day=max_q.day())
+            mask_valid = parsed_dates.between(min_ts, max_ts)
             mask_nan = subset["watermaze_date"].isna()
             subset = subset[mask_valid | mask_nan].reset_index(drop=True)
 
@@ -1240,9 +1260,11 @@ class FilterApp(QMainWindow):
         if not filter_active or not data_cols or not selected_values:
             return subset.reset_index(drop=True)
 
-        # Keep only rows that match selected values in at least one of the matching columns
+        # Keep rows that match selected values, and rows missing that metadata
+        # (e.g. Moore has no strain, so strain filtering should not drop those animals).
         mask_match = subset[data_cols].isin(selected_values).any(axis=1)
-        subset = subset[mask_match]
+        mask_nan = subset[data_cols].isna().all(axis=1)
+        subset = subset[mask_match | mask_nan]
         return subset.reset_index(drop=True)
     
     def make_line_edit(self, layout, column):
@@ -1343,8 +1365,9 @@ class FilterApp(QMainWindow):
 
     def clean_df(self, df):
         df.columns = [x.lower().strip() for x in df.columns]
-        if df["pool_diam"].dtype != int and df["pool_diam"].dtype != float:
-            df['pool_diam'] = [(float(value[:-2]) / 100) for value in df['pool_diam']]
+        if "pool_diam" in df.columns:
+            pool = pd.to_numeric(df["pool_diam"], errors="coerce")
+            df["pool_diam"] = pool.where(pool >= 10, pool * 100)
         df = df.loc[:,~df.columns.duplicated()].copy()
         columns_all_nan = df.columns[df.isna().all()].tolist()
         df = df.drop(columns_all_nan, axis=1)

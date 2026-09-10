@@ -19,7 +19,8 @@
  "Weight_g:" : "weight",
  "pool_diam":"pool_diam",
  "protocol_id":"protocol_id",
- "pi_name":"pi_name"
+ "pi_name":"pi_name",
+ "species":"species"
 },
  "Trials": {
  "date": "date",
@@ -57,7 +58,8 @@
  "housing:":"housing",
  "pool_diam":"pool_diam",
  "protocol_id":"protocol_id",
- "pi_name":"pi_name"
+ "pi_name":"pi_name",
+ "species":"species"
 },
  "Trials": {
  "date": "date",
@@ -95,7 +97,8 @@
  "subsequent_measures" : "subsequent_measures",
  "pool_diam":"pool_diam",
  "watermaze_protocol_id":"protocol_id",
- "pi_name":"pi_name"
+ "pi_name":"pi_name",
+ "species":"species"
 },
  "Trials": {
  "date": "date",
@@ -126,7 +129,8 @@
  "tracking_system": "tracking_system",
  "pool_diam":"pool_diam",
  "protocol_id":"protocol_id",
- "pi_name":"pi_name"
+ "pi_name":"pi_name",
+ "species":"species"
 },
  "Trials": {
  "cum_dist": "dist_cum",
@@ -155,7 +159,7 @@
  "probe_weight_p4": "probe_weight_p4",
  "protocol_id":"protocol_id",
  "pi_name":"pi_name",
- "pi_name":"pi_name"
+ "species":"species"
 },
  "Trials": {
  "date": "date",
@@ -166,6 +170,46 @@
  "duration" : "duration",
  "mean_speed" : "mean_speed",
  "protocol_time" : "protocol_time"
+}
+},
+"Moore": {
+ "Metadata": {
+ "animal": "animal",
+ "subject_id": "subject_id",
+ "strain":"strain",
+ "age_mo":"age_mo",
+ "sex": "sex",
+ "genotype":"genotype",
+ "treatment":"treatment",
+ "cohort":"cohort",
+ "cage":"cage",
+ "hole_punch":"hole_punch",
+ "watermaze_date": "watermaze_date",
+ "lights_on": "lights_on",
+ "lights_off":"lights_off",
+ "index_calc_type":"index_calc_type",
+ "tracking_system":"tracking_system",
+ "rat_source":"rat_source",
+ "housing":"housing",
+ "subsequent_measures" : "subsequent_measures",
+ "pool_diam":"pool_diam",
+ "protocol_id":"protocol_id",
+ "pi_name":"pi_name",
+ "acclimation":"acclimation",
+ "tracking_marker":"tracking_marker",
+ "light_level":"light_level",
+ "species":"species"
+},
+ "Trials": {
+ "date": "date",
+ "time": "time",
+ "datetime_trial": "datetime_trial",
+ "cumulative_time": "cumulative_time",
+ "trial_num": "trial_num",
+ "dist_total": "dist_total",
+ "dist_cum": "dist_cum",
+ "mean_speed" : "mean_speed",
+ "duration": "duration"
 }
 },
 "Burke": {
@@ -186,7 +230,8 @@
  "subsequent_measures" : "subsequent_measures",
  "pool_diam":"pool_diam",
  "watermaze_protocol_id":"protocol_id",
- "pi_name":"pi_name"
+ "pi_name":"pi_name",
+ "species":"species"
 },
  "Trials": {
  "test": "test",

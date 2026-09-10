@@ -1,76 +1,23 @@
-\# ID-CARD
-
-
-
-\*\*ID-CARD\*\* is a Python package for standardized preprocessing, integration, and visualization of rodent water maze datasets across multiple labs/cohorts. It converts heterogeneous source files into a consistent wide-format schema, computes derived trial metrics, and provides a GUI for filtering and plotting trial-level outcomes.
-
-
-
-\## What ID-CARD does
-
-
-
-\- Imports and harmonizes data from multiple pipelines/cohorts (e.g., Barnes, Burke, McQuail, Rapp, Foster).
-
-\- Applies shared key-based renaming/mapping so trial and metadata fields are consistent across datasets.
-
-\- Builds trial-type aware wide tables (`s`:spatial/learning trials, `p`: probe trials, `c`: cued/visible platform trials) with standardized column naming.
-
-\- Preserves and merges subject-level metadata (e.g., age, sex, genotype, source, calculated index fields).
-
-\- Computes derived features such as cumulative timing and cumulative behavioral metrics.
-
-\- Provides a GUI to:
-
-&#x20; - filter subjects/trials/metadata,
-
-&#x20; - plot trial variables vs. selected time axes,
-
-&#x20; - split curves by trial type and age groups,
-
-&#x20; - display uncertainty bands (95% CI, SEM, or SD).
-
-
-
-\## Package structure
-
-
-
-\- \*\*`import\_scripts/`\*\* – cohort-specific import/transformation pipelines.
-
-\- \*\*`combined/`\*\* – cross-cohort combining and shared normalization utilities.
-
-\- \*\*`gui/`\*\* – interactive filtering and plotting application.
-
-\- \*\*`\*/keys/`\*\* and \*\*`combined/shared\_keys/`\*\* – mapping/config files for schema harmonization.
-
-
-
-\## Intended use
-
-
-
-\*\*ID-CARD\*\* is designed for reproducible water maze data preparation and exploratory analysis, especially when combining datasets produced with different acquisition systems and naming conventions. It is suitable both for one-off preprocessing and for standardized repeated runs in analysis workflows.
 
 # IDCARD User Guide
 
 ## Table of Contents
 
-1. [Overview](#overview)
-2. [Installation](#installation)
-3. [Project Structure](#project-structure)
-4. [Data Pipeline Overview](#data-pipeline-overview)
-5. [Running the Import Scripts](#running-the-import-scripts)
-6. [Launching the GUI](#launching-the-gui)
-7. [GUI Walkthrough](#gui-walkthrough)
-   - [Open Dialog](#open-dialog)
-   - [Filter Panel](#filter-panel)
-   - [Data Table](#data-table)
-   - [Plotting](#plotting)
-   - [Saving Data](#saving-data)
-8. [Key/Configuration Files](#keyconfiguration-files)
-9. [Adding a New Lab or Cohort](#adding-a-new-lab-or-cohort)
-10. [Troubleshooting](#troubleshooting)
+   - [Overview](#overview)
+   - [Installation](#installation)
+   - [Project Structure](#project-structure)
+   - [Data Pipeline Overview](#data-pipeline-overview)
+   - [Column Naming Convention](#column-naming-convention)
+   - [Key/Configuration Files](#keyconfiguration-files)
+   - [Running the Import Scripts](#running-the-import-scripts)
+   - [Launching the GUI](#launching-the-gui)
+   - [GUI Walkthrough](#gui-walkthrough)
+      - [Open Dialog](#open-dialog)
+      - [Filter Panel](#filter-panel)
+      - [Data Table](#data-table)
+      - [Plotting](#plotting)
+      - [Saving Data](#saving-data)
+   - [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -81,20 +28,25 @@ Python toolkit for preprocessing, integrating, and visualizing rodent Morris Wat
 datasets collected across multiple laboratories across varying ages and strains. Each lab may use different acquisition
 systems, naming conventions, file formats, and protocol structure. IDCARD harmonizes those differences at the level of individual trials
 integrated into a single wide-format table and provides an interactive GUI for filtering animals and
-trials, inspecting the data, generating plots, and exporting subsets.
+trials, inspecting the data, generating plots, and exporting subsets. This collaborative effort is an outcome of the
+Collaboratory on Research Definitions for Reserve and Resilience in Cognitive Aging and Dementia 4th Workshop (https://reserveandresilience.com/)
+funded by the National Institute on Aging.
+
+How each lab’s raw files are imported, and how that lab’s key files work, is documented in that lab folder’s `README.md`. This file covers installation, the shared column scheme, shared key formats, combining, and the GUI.
+
 
 ### Included Lab Datasets
 
-| Lab (folder name) | PI / Source | Tracking System |
-|--------------------|-------------|-----------------|
-| `barnes`           | Barnes      | ANYMaze         |
-| `burke`            | Burke       | Actimetrics Watermaze         |
-| `disterhoft`	     | Disterhoft  | Actimetrics' Watermaze        |
-| `foster`           | Foster      | Ethovision      |
-| `gallagher`        | Gallagher   | HVS, ANYMaze    |
-| `mcquail`          | McQuail     | Ethovision      |
-| `moore`            | Moore       | varies          |
-| `rapp`             | Rapp        | ANYMaze         |
+| PI / Source | Lab (folder name) | Tracking System | Species | Lab README |
+|--------------------|-------------|-----------------|---------|------------|
+| Barnes           | `barnes`      | ANYMaze         | rat | [barnes/README.md](barnes/README.md) |
+| Burke            | `burke`        | Actimetrics Watermaze | rat | [burke/README.md](burke/README.md) |
+| Disterhoft       | `disterhoft`  | Actimetrics Watermaze | rat | Pending |
+| Foster           | `foster`       | Ethovision      | rat | [foster/README.md](foster/README.md) |
+| Gallagher        | `gallagher`   | HVS             | rat | [gallagher/README.md](gallagher/README.md) |
+| McQuail          | `mcquail`    | Ethovision      | rat | [mcquail/README.md](mcquail/README.md) |
+| Moore            | `moore`       | Actimetrics Watermaze | mouse | [moore/README.md](moore/README.md) |
+| Rapp             | `rapp`       | ANYMaze         | rat | [rapp/README.md](rapp/README.md) |
 
 ---
 
@@ -103,7 +55,7 @@ trials, inspecting the data, generating plots, and exporting subsets.
 ### Prerequisites
 
 - **Python 3.9 or newer** (the project is developed on Python 3.13)
-- **pip** 
+- **pip**
 
 ### Step 1 &mdash; Clone or Copy the Project
 
@@ -183,47 +135,40 @@ If this prints `IDCARD is ready.` with no errors, everything is set up correctly
 ```
 IDCARD/
 ├── pyproject.toml              # Package metadata and build config
-├── README.md                   # High-level project description
-├── __init__.py                 # Top-level package init
+├── README.md                   # Shared project documentation (this file)
+├── __init__.py
 │
 ├── gui/                        # Interactive GUI application
-│   ├── __init__.py
-│   ├── watermaze_gui.py        # Main GUI (FilterApp, open/save dialogs)
-│   └── import_tools.py         # Shared utility functions used by GUI
+│   ├── watermaze_gui.py
+│   └── import_tools.py
 │
 ├── import_scripts/             # Per-lab raw-data import pipelines
-│   ├── __init__.py
-│   ├── import_tools.py         # Shared utility functions for imports
-│   ├── barnes_import.py        # Barnes lab import script
-│   ├── burke_import.py         # Burke lab import script
-│   ├── foster_import.py        # Foster lab import script
-│   ├── mcquail_import.py       # McQuail lab import script
-│   └── rapp_import.py          # Rapp lab import script
+│   ├── import_tools.py
+│   ├── barnes_import.py
+│   ├── burke_import.py
+│   ├── foster_import.py
+│   ├── gallagher_import.py
+│   ├── mcquail_import.py
+│   ├── moore_import.py
+│   └── rapp_import.py
 │
 ├── combined/                   # Cross-lab combining and normalization
-│   ├── __init__.py
-│   ├── combine_data.py         # Loads per-lab CSVs, applies shared keys
+│   ├── combine_data.py
 │   └── shared_keys/
-│       ├── shared_keys.json    # Column mapping: lab-specific → standardized
+│       ├── shared_keys.json
 │       └── trial_type_key_template.csv
 │
-├── barnes/                     # Barnes lab data and config
-│   ├── barnes.csv              # Combined (preprocessed) output
-│   ├── keys/
-│   │   ├── barnes.json         # Column-rename mapping (Spatial/Probe/Visible)
-│   │   └── trial_type_key_barnes.csv  # Trial numbering scheme
-│   └── rat_data/
-│       ├── raw/                # Original per-animal per-day CSVs
-│       └── database_format/    # Merged wide-format output
-│
-├── burke/                      # (Same structure as barnes)
+├── barnes/                     # Each lab folder: README, <lab>.csv, keys/, rat_data/
+├── burke/
 ├── foster/
-├── disterhoft/                      
+├── disterhoft/
 ├── gallagher/
 ├── mcquail/
 ├── moore/
 └── rapp/
 ```
+
+Each lab folder contains its own `README.md` (import steps, raw columns, key files, and dataset description for that dataset).
 
 ---
 
@@ -233,19 +178,16 @@ The data flows through three stages:
 
 ### Stage 1: Raw Import (per lab)
 
-Each lab has an import script under `import_scripts/` (e.g. `barnes_import.py`). These
-scripts:
+Each lab has an import script under `import_scripts/` (e.g. `barnes_import.py`). Scripts differ by acquisition system and file layout, but they all produce a wide-format `<lab>/<lab>.csv` (one row per animal, trial measures as columns). See the lab README for source files, trial classification, and lab-specific metadata.
 
-1. Read raw CSV files from `<lab>/rat_data/raw/`.
-2. Group files by experiment (animal + date prefix).
-3. Classify each file as **Spatial**, **Probe**, **Visible**, or **Info** based on its
-   filename.
-4. Rename columns using the lab-specific JSON key file (`<lab>/keys/<lab>.json`).
-5. Assign standardized trial suffixes (`_s_1`, `_p_1`, `_c_1`, etc.) according to the
-   trial-type key CSV (`<lab>/keys/trial_type_key_<lab>.csv`).
-6. Merge all trials for each animal into a single wide-format row.
-7. Write the result to `<lab>/rat_data/raw/outfiles/` and a combined
-   `<lab>/<lab>.csv`.
+Typical steps (not every lab uses all of these):
+
+1. Read raw files from `<lab>/rat_data/`.
+2. Rename columns using the lab JSON key (`<lab>/keys/<lab>.json`) when one exists.
+3. Assign standardized trial suffixes (`_s_1`, `_p_1`, `_c_1`, …) from the trial-type key CSV.
+4. Merge trials into one wide row per animal.
+5. Derive shared fields such as `cumulative_time_*` when trial datetimes exist.
+6. Write `<lab>/<lab>.csv`.
 
 ### Stage 2: Cross-Lab Combining
 
@@ -254,16 +196,20 @@ scripts:
 1. Selects only the columns listed in `combined/shared_keys/shared_keys.json`.
 2. Renames lab-specific column names to a common schema (e.g. `ttr_dist` becomes
    `dist_total`).
-3. Converts units where needed (cm/s to m/s for Gallagher and McQuail data).
+3. Converts units where needed: Gallagher, McQuail, and Moore distance and speed
+   recorded in cm / cm/s are divided by 100 to meters and m/s.
 4. Normalizes categorical values (e.g. "Male"/"Female" to "M"/"F").
-5. Produces a dictionary of aligned DataFrames, one per lab.
+5. Fills `species` if missing (`mouse` for Moore, `rat` otherwise).
+6. Produces a dictionary of aligned DataFrames, one per lab.
 
 ### Stage 3: GUI Exploration
 
 The GUI (`gui/watermaze_gui.py`) concatenates all lab DataFrames and presents a
 filter-and-plot interface.
 
-### Column Naming Convention
+---
+
+## Column Naming Convention
 
 Trial-level data columns follow this pattern:
 
@@ -272,17 +218,74 @@ Trial-level data columns follow this pattern:
 ```
 
 - **variable**: `dist_total`, `dist_cum`, `dist_mean`, `mean_speed`, `duration`,
-  `cumulative_time`, `datetime_trial`, `trial_num`, etc.
+  `cumulative_time`, `datetime_trial`, `trial_num`, `protocol_time`, etc.
 - **trial_type**: `s` (Spatial), `p` (Probe), `c` (Visible/Cue)
-- **trial_number**: Sequential integer (e.g. 1, 2, ... 24)
+- **trial_number**: Sequential integer within that type (e.g. 1, 2, …)
 
 Example: `dist_cum_s_12` = cumulative distance, spatial trial 12.
+
+After import, some labs still use internal prefixes (`ttr_*`, `cipl_*`). `shared_keys.json` maps those prefixes to the standardized names above at combine time.
+
+| Standardized variable | Typical meaning |
+|-----------------------|-----------------|
+| `dist_total` | Path length |
+| `dist_cum` | Cumulative distance or cumulative search error |
+| `dist_mean` | Mean distance from the platform / mean search error |
+| `mean_speed` | Mean swim speed |
+| `duration` | Escape latency |
+| `datetime_trial` | Trial date and time |
+| `cumulative_time` | Seconds from the earliest `datetime_trial_*` in the row (when datetimes exist) |
+| `protocol_time` | Seconds from protocol start using a fixed inter-trial interval (when used) |
+| `trial_num` | Sequential trial index in the protocol |
+
+Which raw columns map to these names, and which of these variables a lab actually has, are documented in that lab’s README.
+
+Animal IDs usually receive a lab suffix at import (e.g. `.CB`, `.SB`, `.PR`, `.JM`, `.SM`, `.MG`) so IDs stay unique after combining.
+
+---
+
+## Key/Configuration Files
+
+### Lab-Specific JSON Keys (`<lab>/keys/<lab>.json`)
+
+When present, this file maps raw acquisition-system column names (or unique substrings) to internal base names. Sections are typically `Spatial`, `Probe`, `Visible`, and sometimes `Info`:
+
+```json
+{
+  "Spatial": { "raw_col_name": "standardized_name_", ... },
+  "Probe":   { "raw_col_name": "standardized_name_", ... },
+  "Visible": { "raw_col_name": "standardized_name_", ... }
+}
+```
+
+The trailing underscore on standardized names indicates trial-level columns; a numeric
+trial suffix (e.g. `_s_1`) is appended during import.
+
+### Trial-Type Key CSV (`<lab>/keys/trial_type_key_<lab>.csv`)
+
+Maps each sequential trial number to a trial type and protocol day. Typical columns:
+
+| Column       | Meaning                                    |
+|--------------|--------------------------------------------|
+| trial_num    | Sequential trial number (1, 2, 3, ...)     |
+| trial_type   | `spatial`, `probe`, or `visible`           |
+| protocol_day | Which day of the protocol this trial falls on|
+| new_suffix   | The standardized suffix (e.g. `_s_1`, `_p_1`, `_c_1`)|
+
+Some labs add extra columns (`trial_name`, `protocol_time`, separate young/aged keys). See the lab README.
+
+### Shared Keys (`combined/shared_keys/shared_keys.json`)
+
+Defines the cross-lab column mapping. Each lab has a `Metadata` section (direct renames)
+and a `Trials` section (prefix-based renames). For example, Barnes `cipl_dist` maps to
+`dist_total`, while Rapp `ttr_dist` also maps to `dist_total`.
 
 ---
 
 ## Running the Import Scripts
 
 You normally only need to run the import scripts once (or when raw data changes).
+Lab-specific notes (which files are read, what is overwritten) are in each lab README.
 
 ```powershell
 cd "<your_path>\IDCARD"
@@ -291,9 +294,11 @@ python -m import_scripts.rapp_import
 python -m import_scripts.burke_import
 python -m import_scripts.foster_import
 python -m import_scripts.mcquail_import
+python -m import_scripts.gallagher_import
+python -m import_scripts.moore_import
 ```
 
-Each script will print progress messages and write its output CSV to the lab folder.
+Each script prints progress messages and writes its output CSV under the lab folder.
 
 ---
 
@@ -365,9 +370,10 @@ Filters based on animal-level characteristics:
 
 | Filter   | Type        | Description                                       |
 |----------|-------------|---------------------------------------------------|
+| species  | Checkboxes  | Include mouse and/or rat.                         |
 | age      | Min / Max   | Filter by age in months. Type a number in each box.|
 | sex      | Checkboxes  | Check/uncheck M (Male) or F (Female).             |
-| strain   | Checkboxes  | Select one or more rat strains.                   |
+| strain   | Checkboxes  | Select one or more strains.                       |
 | genotype | Checkboxes  | Select one or more genotypes.                     |
 
 #### 2. Protocol Metadata
@@ -379,8 +385,8 @@ Filters based on experimental protocol details:
 | pi             | Checkboxes  | Select which PI's data to include.              |
 | source         | Checkboxes  | Filter by animal source (e.g. NIA).             |
 | housing        | Checkboxes  | Filter by housing type.                         |
-| pool_diam      | Min / Max   | Pool diameter in meters.                        |
-| Start Date     | Date pickers| Min and max watermaze start dates.              |
+| pool_diam      | Min / Max   | Pool diameter in centimeters.                   |
+| Start Date     | Date pickers| Min and max water maze start dates.              |
 | lights_on      | Time pickers| Earliest and latest lights-on time.             |
 | lights_off     | Time pickers| Earliest and latest lights-off time.            |
 
@@ -475,43 +481,6 @@ Click **Save to .csv** to export the currently filtered and displayed data.
 
 ---
 
-## Key/Configuration Files
-
-### Lab-Specific JSON Keys (`<lab>/keys/<lab>.json`)
-
-Each lab has a JSON file that maps raw column names from the acquisition system to
-standardized internal names. The JSON has sections for each trial type:
-
-```json
-{
-  "Spatial": { "raw_col_name": "standardized_name_", ... },
-  "Probe":   { "raw_col_name": "standardized_name_", ... },
-  "Visible": { "raw_col_name": "standardized_name_", ... }
-}
-```
-
-The trailing underscore on standardized names indicates trial-level columns; a numeric
-trial suffix (e.g. `_s_1`) is appended during import.
-
-### Trial-Type Key CSV (`<lab>/keys/trial_type_key_<lab>.csv`)
-
-Maps each sequential trial number to a trial type and protocol day:
-
-| Column       | Meaning                                    |
-|--------------|--------------------------------------------|
-| trial_num    | Sequential trial number (1, 2, 3, ...)     |
-| trial_type   | `spatial`, `probe`, or `visible`           |
-| protocol_day | Which day of the protocol this trial falls on|
-| new_suffix   | The standardized suffix (e.g. `_s_1`, `_p_1`, `_c_1`)|
-
-### Shared Keys (`combined/shared_keys/shared_keys.json`)
-
-Defines the cross-lab column mapping. Each lab has a `Metadata` section (direct renames)
-and a `Trials` section (prefix-based renames). For example, Barnes `cipl_dist` maps to
-`dist_total`, while Rapp `ttr_dist` also maps to `dist_total`.
-
----
-
 ## Troubleshooting
 
 ### "No module named 'PySide6'"
@@ -544,4 +513,3 @@ types (S / P / C) to reduce the visible column count.
 The GUI logs these when it cannot read a CSV file (e.g. the file is open in Excel or
 on a locked network share). Close any programs that may have the file open and try
 again.
-

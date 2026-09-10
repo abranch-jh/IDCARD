@@ -1,0 +1,42 @@
+{
+  "Spatial": {
+    "rundate": "date",
+    "ttr_duration": "ttr_duration",
+    "ttr_mean_speed": "ttr_mean_speed",
+    "ttr_dist": "ttr_dist",
+    "ttr_cum_dist_mean": "ttr_cum_dist_mean",
+    "ttr_cum_dist": "ttr_cum_dist",
+    "block": "block",
+    "trial_num_cum": "trial_num"
+  },
+  "Probe": {
+    "rundate": "date",
+    "ttr_duration": "ttr_duration",
+    "ttr_mean_speed": "ttr_mean_speed",
+    "ttr_dist": "ttr_dist",
+    "ttr_cum_dist_mean": "ttr_cum_dist_mean",
+    "ttr_cum_dist": "ttr_cum_dist",
+    "block": "block",
+    "trial_num_cum": "trial_num"
+  },
+  "Visible": {
+    "rundate": "date",
+    "ttr_duration": "ttr_duration",
+    "ttr_mean_speed": "ttr_mean_speed",
+    "ttr_dist": "ttr_dist",
+    "ttr_cum_dist_mean": "ttr_cum_dist_mean",
+    "ttr_cum_dist": "ttr_cum_dist",
+    "block": "block",
+    "trial_num_cum": "trial_num"
+  },
+  "Info": {
+    "age": "age",
+    "sex": "sex",
+    "strain": "strain",
+    "genotype": "genotype",
+    "watermaze_date": "watermaze_date",
+    "calculated_index": "calculated_index",
+    "source_id": "source_id",
+    "subject_id": "subject_id"
+  }
+}

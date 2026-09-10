@@ -79,6 +79,7 @@ for cohort in cohort_sets:
     # cohort = rename_trial_num_cols(cohort, trial_type_key)
  
     cohort['pi_name'] = 'Rapp' 
+    cohort['species'] = 'rat'
     cohort['protocol_id'] = 'Rapp_WM_1'
     cohort['strain'] = 'Long Evans'
     cohort['genotype'] = 'WT'

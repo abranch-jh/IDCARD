@@ -8,10 +8,10 @@
  "datetime_trial": "datetime_trial",
  "Time of day:": "timeofday",
  "LATENTsc": "duration",
- "TTR to End of test; Distance (m)": "ttr_dist",
+ "PATHISmt": "ttr_dist",
  "SPEEDmts": "mean_speed",
  "PROXIMmt": "ttr_platform_mean_dist",
- "CUMUms04": "cum_dist"
+ "GALCUMms": "cum_dist"
 },
 
 "Visible": {
@@ -23,10 +23,10 @@
  "datetime_trial": "datetime_trial",
  "Time of day:": "timeofday",
  "LATENTsc": "duration",
- "TTR to End of test; Distance (m)": "ttr_dist",
+ "PATHISmt": "ttr_dist",
  "SPEEDmts": "mean_speed",
  "PROXIMmt": "ttr_platform_mean_dist",
- "CUMUms04": "cum_dist"
+ "GALCUMms": "cum_dist"
 },
 
 "Probe": {
@@ -38,10 +38,10 @@
  "datetime_trial": "datetime_trial",
  "Time of day:": "timeofday",
  "LATENTsc": "duration",
- "TTR to End of test; Distance (m)": "ttr_dist",
+ "PATHISmt": "ttr_dist",
  "SPEEDmts": "mean_speed",
  "PROXIMmt": "ttr_platform_mean_dist",
- "CUMUms04": "cum_dist"
+ "GALCUMms": "cum_dist"
 },
 "Info": {}
 }

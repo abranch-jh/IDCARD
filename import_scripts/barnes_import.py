@@ -40,6 +40,11 @@ for experiment_prefix, file_lists in data_dict.items():
                     df['watermaze_date'] = pd.to_datetime(df['Date_Start_SpatialWatermaze:'], format='%m/%d/%Y', errors='coerce').dt.date
                     df = df.rename({'Barnes_ID:': "animal"}, copy=True, axis=1)
                     df = df.drop(["Date_Birth:", "Date_Start_SpatialWatermaze:"], axis=1)
+                    housing_col = next((col for col in df.columns if col.strip().lower().startswith('housing')), None)
+                    if housing_col is not None:
+                        df[housing_col] = df[housing_col].apply(
+                            lambda x: 'Single' if str(x).strip().lower() == 'single' else x
+                        )
                     wide_df_parts.append(df)
                 continue
 
@@ -85,6 +90,7 @@ for cohort in cohort_sets:
     # print(cohort.shape)
     
     cohort['pi_name'] = 'Barnes'
+    cohort['species'] = 'rat'
     cohort['protocol_id'] = 'Barnes_WM_1'
     cohort['lights_on'] = '7:00'
     cohort['lights_off'] = '19:00'

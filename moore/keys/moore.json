@@ -1,0 +1,43 @@
+{
+  "Spatial": {
+    "subject_id": "animal",
+    "date": "date_s_",
+    "time_of_day": "time_s_",
+    "datetime": "datetime_trial_s_",
+    "duration": "duration_s_",
+    "dist": "dist_total_s_",
+    "mean_speed": "mean_speed_s_",
+    "cum_dist": "dist_cum_s_"
+  },
+  "Probe": {
+    "subject_id": "animal",
+    "date": "date_p_",
+    "time_of_day": "time_p_",
+    "datetime": "datetime_trial_p_",
+    "duration": "duration_p_",
+    "dist": "dist_total_p_",
+    "mean_speed": "mean_speed_p_",
+    "cum_dist": "dist_cum_p_"
+  },
+  "Visible": {
+    "subject_id": "animal",
+    "date": "date_c_",
+    "time_of_day": "time_c_",
+    "datetime": "datetime_trial_c_",
+    "duration": "duration_c_",
+    "dist": "dist_total_c_",
+    "mean_speed": "mean_speed_c_",
+    "cum_dist": "dist_cum_c_"
+  },
+  "Info": {
+    "subject_id": "animal",
+    "age": "age_mo",
+    "sex": "sex",
+    "genotype": "genotype",
+    "treatment": "treatment",
+    "cohort": "cohort",
+    "cage": "cage",
+    "hole_punch": "hole_punch",
+    "species": "species"
+  }
+}

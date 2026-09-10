@@ -11,8 +11,7 @@
  "DistanceMoved(cm)": "dist_s_",
  "Velocity(cm/s)": "mean_speed_s_", 
  "TotalSearchError(cm*s)": "cum_dist_raw_s_",
- "MeanSearchError(cm)": "cum_dist_mean_s_",
- "MeanSearchError*ProbeWeight": "search_error_probe_weighted"
+ "MeanSearchError(cm)": "cum_dist_mean_s_"
 },
 
 "Visible": {
@@ -43,7 +42,8 @@
  "DistanceMoved(cm)": "dist_c_",
  "Velocity(cm/s)": "mean_speed_c_", 
  "TotalSearchError(cm*s)": "cum_dist_raw_c_",
- "MeanSearchError(cm)": "cum_dist_mean_c_"
+ "MeanSearchError(cm)": "cum_dist_mean_c_",
+ "MeanSearchError*ProbeWeight": "search_error_probe_weighted"
 },
 
 "Info": {
