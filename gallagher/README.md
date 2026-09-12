@@ -4,7 +4,7 @@ Shared column naming, key-file formats, combining, and the GUI are in the [proje
 
 ## Overview
 
-The rats selected for inclusion in the Gallagher lab data set were collected as monthly cohorts between 2008 and 2023 as part of studies of cognitive aging under a long running Program Project grant from the National Institute of Aging (P01AG009973, Gallagher PI). The structure for the Gallagher lab protocol is outlined in detail in Gallagher et al., 1993.
+The rats selected for inclusion in the Gallagher lab data set were collected as monthly cohorts between 2008 and 2023 as part of studies of cognitive aging in outbred Long Evans rats under a long running Program Project grant from the National Institute of Aging (P01AG009973, Michela Gallagher PI). The structure for the lab protocol is outlined in detail in Gallagher et al., 1993.
 
 Videos for individual trials were collected and analyzed using HVS Morris Water Maze. Raw data is organized by year and cohort under `rat_data/`. The raw data was extracted from raw 'WET' HVS files by a custom software package. Each cohort has three CSVs: block (`*BL1.csv`), index (`*IN1.csv`), and trial (`*TR1.csv`). `import_scripts/gallagher_import.py` classifies Spatial / Probe / Visible, pivots to wide format, and concatenates.
 

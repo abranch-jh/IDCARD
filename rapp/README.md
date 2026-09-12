@@ -4,7 +4,11 @@ Shared column naming, key-file formats, combining, and the GUI are in the [proje
 
 ## Overview
 
+The rats selected for inclusion in the Rapp lab data set were collected as monthly cohorts used for studies of cognitive aging in outbred Long Evans rats. Data were collected with ANYMaze, and selected data was exported into Excel. Raw exports are organized by cohort, protocol day, and trial type (Spatial/AQ, Probe, Visible/Cue). ANYMaze provides an option to compute search error based on cumulative integrated path length (CIPL) or by custom functions. Use of different search error calculations result in small differences in some per trial measurements. To take advantage of this feature in ANYMaze, data were exported using both CIPL based calculations (raw data columns contain '_cipl' prefix) as well as in the style used by Gallagher, Rapp, Burke, and McQuail labs (based on Gallagher et. al., 1993; time needed to travel straight line path is removed, these raw data columns contain '_ttr' prefix). 
+
 ANYMaze Morris Water Maze data by cohort and trial type (Spatial/AQ, Probe, Visible/Cue). `import_scripts.rapp_import.py` merges per-day CSVs into one wide row per animal. Animal IDs get a `.PR` suffix.
+
+![Rapp Protocol Diagram](keys/rapp_protocol.png)
 
 ## Folder layout
 

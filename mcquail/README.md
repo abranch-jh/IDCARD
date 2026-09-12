@@ -4,10 +4,11 @@ Shared column naming, key-file formats, combining, and the GUI are in the [proje
 
 ## Overview
 
-The rats included in the McQuail lab dataset were a part of a [Describe study]. Videos were taken and analyzed with Ethovision software, and selected data variables were exported to Excel. The primary source is a long-format csv file: `rat_data/mcquail_data_plus.csv` (one row per trial). 
+The rats included in the McQuail lab dataset were tested as a part of ongoing studies using inbred Fischer 344 and Fischer Brown Norway hybrid rats of varying ages. Videos for individual trials were analyzed with Ethovision software, and selected data variables were exported to Excel. The primary source is a long-format csv file: `rat_data/mcquail_data_plus.csv` (one row per trial). 
 
 `import_scripts/mcquail_import.py` filters subjects, assigns types, pivots to wide format, and writes `mcquail.csv`. Animal IDs get a `.JM` suffix. 
 
+![McQuail Protocol Diagram](keys/mcquail_protocol.png)
 
 ## Folder layout
 

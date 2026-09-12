@@ -4,9 +4,11 @@ Shared column naming, key-file formats, combining, and the GUI are in the [proje
 
 ## Overview
 
-The rats included in the Barnes lab dataset were a part of a [Cognitive Aptitude Study]. Data were collected with ANYMaze, and selected data was exported into Excel. Raw exports are organized by cohort, protocol day, and trial type (Spatial, Probe, Visible). ANYMaze provides an option to compute search error based on cumulative integrated path length (CIPL) or by custom functions. Use of different search error calculations result in small differences in some per trial measurements. To take advantage of this feature in ANYMaze, data were exported using both CIPL based calculations (raw data columns contain '_cipl' prefix) as well as in the style used by Gallagher, Rapp, and McQuail labs (based on Gallagher et. al., 1993; time needed to travel straight line path is removed, these raw data columns contain '_ttr' prefix).  
+The rats included in the Barnes lab dataset were a part of a Cognitive Aptitude Study using inbred Fischer 344 rats tested over a range of ages. Data were collected with ANYMaze, and selected data was exported into Excel. Raw exports are organized by cohort, protocol day, and trial type (Spatial, Probe, Visible). ANYMaze provides an option to compute search error based on cumulative integrated path length (CIPL) or by custom functions. Use of different search error calculations result in small differences in some per trial measurements. To take advantage of this feature in ANYMaze, data were exported using both CIPL based calculations (raw data columns contain '_cipl' prefix) as well as in the style used by Gallagher, Rapp, Burke, and McQuail labs (based on Gallagher et. al., 1993; time needed to travel straight line path is removed, these raw data columns contain '_ttr' prefix).  
 
 `import_scripts/barnes_import.py` merges per-day raw data CSVs into one wide row per animal and writes `barnes.csv`. Animal IDs are appended with a `.CB` suffix.
+
+![Barnes Protocol Diagram](keys/barnes_protocol.png)
 
 ## Folder layout
 

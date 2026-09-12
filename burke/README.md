@@ -4,9 +4,11 @@ Shared column naming, key-file formats, combining, and the GUI are in the [proje
 
 ## Overview
 
-The rats included in the Burke lab dataset were a part of a [Describe study]. Videos were taken and analyzed with Actimetrics Watermaze software, and selected data variables were exported as .stc text files and converted to Excel .csv. Raw exports are organized by cohort and protocol day, with trial type (Spatial, Probe, Visible) dependent on the protocol sequence outlined in `burke\keys\trial_type_key_burke.csv`. One CSV per cohort and protocol day can be found in `rat_data/csv/`. 
+Videos for individual trials were analyzed with Actimetrics Watermaze software, and selected data variables were exported as .stc text files and converted to .csv with Excel. Raw exports are organized by cohort and protocol day, with trial type (Spatial, Probe, Visible) dependent on the protocol sequence outlined in `burke/keys/trial_type_key_burke.csv`. One CSV per cohort and protocol day can be found in `rat_data/csv/`. 
 
 `import_scripts/burke_import.py` merges days, assigns types from the trial-type key, and writes `burke.csv`. Animal IDs get a `.SB` suffix.
+
+![Burke Protocol Diagram](keys/burke_protocol.png)
 
 ## Folder layout
 
