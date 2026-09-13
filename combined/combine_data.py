@@ -25,6 +25,11 @@ from scipy.stats import sem, t
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 top_folder = PROJECT_ROOT
 file_list = glob.glob(str(top_folder / "*" / "*.csv"))
+MOORE_CSVS = [
+    top_folder / "moore" / "moore_young.csv",
+    top_folder / "moore" / "moore_aged.csv",
+]
+file_list = sorted(set(file_list) | {str(path) for path in MOORE_CSVS if path.is_file()})
 print(file_list)
 key_file = PROJECT_ROOT / "combined" / "shared_keys" / "shared_keys.json"
 #print(file_list)
@@ -114,9 +119,7 @@ def dataset_name_from_path(filepath, key_data):
             return key
     return None
 
-dataframes = {}
-for filepath in file_list:
-    name = os.path.basename(filepath)
+def load_csv(filepath):
     df = pd.read_csv(filepath)
     dataset = dataset_name_from_path(filepath, key_data)
     if dataset is not None:
@@ -126,23 +129,47 @@ for filepath in file_list:
         if dataset in cm_per_sec_labs:
             df = convert_cm_per_sec_to_m_per_sec(df, distance_columns)
 
-    # --- normalize sex column here ---
-    if 'sex' in df.columns:
-        col = df['sex'].astype(str).str.strip()
+    if "sex" in df.columns:
+        col = df["sex"].astype(str).str.strip()
         lower = col.str.lower()
-        df['sex'] = np.where(
-            lower == 'male', 'M',
-            np.where(lower == 'female', 'F', col)
+        df["sex"] = np.where(
+            lower == "male",
+            "M",
+            np.where(lower == "female", "F", col),
         )
 
-    default_species = 'mouse' if dataset == 'Moore' else 'rat'
-    if 'species' not in df.columns:
+    default_species = "mouse" if dataset == "Moore" else "rat"
+    if "species" not in df.columns:
         df = df.copy()
-        df['species'] = default_species
+        df["species"] = default_species
     else:
-        df['species'] = df['species'].fillna(default_species)
+        df["species"] = df["species"].fillna(default_species)
 
-    dataframes[name] = df
+    lab = os.path.basename(os.path.dirname(filepath)).lower()
+    df = df.copy()
+    df["lab"] = lab
+    return df
+
+
+lab_groups = {}
+for filepath in file_list:
+    if not os.path.isfile(filepath):
+        continue
+    lab = os.path.basename(os.path.dirname(filepath)).lower()
+    lab_groups.setdefault(lab, []).append(load_csv(filepath))
+
+dataframes = {}
+for lab, frames in lab_groups.items():
+    if len(frames) == 1:
+        dataframes[f"{lab}.csv"] = frames[0]
+    else:
+        dataframes[f"{lab}.csv"] = pd.concat(frames, axis=0, ignore_index=True, sort=False)
+
+
+def get_combined_dataframe():
+    if not dataframes:
+        return pd.DataFrame()
+    return pd.concat(dataframes.values(), axis=0, ignore_index=True, sort=False)
 
 
 def plot_var_vs_time(

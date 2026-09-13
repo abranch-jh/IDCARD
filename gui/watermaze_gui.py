@@ -479,7 +479,7 @@ class FilterApp(QMainWindow):
     def fill_in_metadata_group_box(self):
         # Age input field
         self.age_h = QHBoxLayout()
-        self.min_age_input, self.max_age_input = self.make_line_edit(self.age_h, 'age')
+        self.min_age_input, self.max_age_input = self.make_line_edit(self.age_h, 'age_mo')
         self.rat_metadata_filter.add_content(self.age_h)
         
         # Sex input field
@@ -509,6 +509,12 @@ class FilterApp(QMainWindow):
         # Add the Rat Metadata group box to the main layout
     
     def fill_in_protocol_group_box(self):
+        # Lab input field (e.g. moore includes both moore_young and moore_aged)
+        self.Lab_h = QHBoxLayout()
+        self.labs = {}
+        self.make_multiselect_field(self.labs, self.Lab_h, 'lab')
+        self.protocol_metadata_filter.add_content(self.Lab_h)
+
         # Pi Mame input field
         self.PI_Name_h = QHBoxLayout()
         self.PIs = {}
@@ -1176,6 +1182,7 @@ class FilterApp(QMainWindow):
         subset = self.apply_multiselect_filter(subset, self.strains, 'strain')
         subset = self.apply_multiselect_filter(subset, self.genotypes, 'genotype')
         subset = self.apply_multiselect_filter(subset, self.species, 'species')
+        subset = self.apply_multiselect_filter(subset, self.labs, 'lab')
         subset = self.apply_multiselect_filter(subset, self.PIs, 'pi')
         subset = self.apply_multiselect_filter(subset, self.housing_type, 'housing')
         subset = self.apply_multiselect_filter(subset, self.animal_source, 'source')
@@ -1378,11 +1385,7 @@ class FilterApp(QMainWindow):
         return df
 
 if __name__ == "__main__":
-    combined_df = pd.concat(
-        combine_data.dataframes.values(),
-        axis=0,
-        ignore_index=True,
-    )
+    combined_df = combine_data.get_combined_dataframe()
 
     # Reuse existing QApplication if matplotlib/Qt already created one
     app = QApplication.instance()
