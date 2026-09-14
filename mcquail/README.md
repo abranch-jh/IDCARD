@@ -4,7 +4,8 @@ Shared column naming, key-file formats, combining, and the GUI are in the [proje
 
 ## Overview
 
-The rats included in the McQuail lab dataset were tested as a part of ongoing studies using inbred Fischer 344 and Fischer Brown Norway hybrid rats of varying ages. Videos for individual trials were analyzed with Ethovision software, and selected data variables were exported to Excel. The primary source is a long-format csv file: `rat_data/mcquail_data_plus.csv` (one row per trial). 
+The rats in the McQuail Lab dataset came from two sets of studies: F344 × Brown Norway F1 (F344 × BN-F1) hybrid rats tested at Wake Forest and F344 rats tested at University of South Carolina. The Wake Forest FBN rats were males spanning 6–28 months (McQuail & Nicolle, 2015), while the USC studies included males and females spanning 4–26 months (Faghihi et al., 2026). Rats were tested using the protocol outlined in the figure below, as in Gallagher et al., 1993. A subset of the USC rats also completed either reversal learning or delayed match-to-place testing after spatial reference memory and before cue training. These trials can be found in `rat_data\mcquail_data_plus.csv` with trial_type `Train-Rev` and
+'Probe-Rev' but are not automatically imported when accessing data with the GUI. Probe weights used for computing the spatial learning index were specific to the study and strain following the general approach described by Gallagher et al. (1993) as outlined in the respective papers, rather than applying one common set of weights across both datasets. Videos for individual trials were analyzed with Ethovision software, and selected data variables were exported to Excel. The primary source is a long-format csv file: `rat_data/mcquail_data_plus.csv` (one row per trial). 
 
 `import_scripts/mcquail_import.py` filters subjects, assigns types, pivots to wide format, and writes `mcquail.csv`. Animal IDs get a `.JM` suffix. 
 
@@ -91,3 +92,9 @@ Zones: Arena, NW/NE/SE/SW Quad, SW/SE/NE/NW Annulus.
 - **`keys/mcquail.json`** — Ethovision / summary names → internal base names by trial type.
 - **`keys/trial_type_key_mcquail.csv`** — sequential trial → type, protocol day, suffix.
 - **`shared_keys.json` (McQuail)** — e.g. `cum_dist_raw` → `dist_cum`, `dist` → `dist_total`; cm conversion.
+
+## Citations
+
+McQuail JA, Nicolle MM. Spatial reference memory in normal aging Fischer 344 × Brown Norway F1 hybrid rats. Neurobiol Aging. 2015 Jan;36(1):323-33. doi: 10.1016/j.neurobiolaging.2014.06.030. Epub 2014 Jul 3. PMID: 25086838; PMCID: PMC4268167.
+
+Faghihi, Z., Horovitz, D. J., Newman, L. A., Vento, P. J., & McQuail, J. A. (2026). Biological sex and normative cognitive aging across spatial learning, flexibility, and working memory in Fischer 344 rats. Behavioral Neuroscience, 140(4), 255–266. https://doi.org/10.1037/bne0000656

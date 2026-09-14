@@ -374,7 +374,7 @@ wide_final['lights_on'] = '7:00'
 wide_final['lights_off'] = '19:00'
 wide_final['index_calc_type'] = "Gallagher/SearchError"
 wide_final['tracking_system'] = "Ethovision"
-wide_final['housing'] = "Paired/Single"
+wide_final["housing"] = wide_final["strain"].map({"FBN": "Single", "F344": "Paired/Single"})
 wide_final['pool_diam'] = "183"
 if "calculated_index" not in wide_final.columns:
     wide_final["calculated_index"] = pd.NA

@@ -312,7 +312,7 @@ class FilterApp(QMainWindow):
         self.central_widget.setLayout(self.main_layout)
         self.setCentralWidget(self.central_widget)
 
-        self.df = df.copy()
+        self.df = self.clean_df(df.copy())
         self.save_folder = save_folder
 
         self.max_trials = cls._compute_max_trials(self.df)
@@ -1372,6 +1372,8 @@ class FilterApp(QMainWindow):
 
     def clean_df(self, df):
         df.columns = [x.lower().strip() for x in df.columns]
+        if "genotype" in df.columns:
+            df["genotype"] = df["genotype"].replace({"Wt": "WT"})
         if "pool_diam" in df.columns:
             pool = pd.to_numeric(df["pool_diam"], errors="coerce")
             df["pool_diam"] = pool.where(pool >= 10, pool * 100)

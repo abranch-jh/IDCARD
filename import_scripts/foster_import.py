@@ -15,6 +15,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 file = PROJECT_ROOT / "foster" / "foster.csv"
 file_loaded = load_df(str(file))
 file_loaded["species"] = "rat"
+file_loaded["housing"] = "Single"
 pool = pd.to_numeric(file_loaded["pool_diam"], errors="coerce")
 file_loaded["pool_diam"] = pool.where(pool >= 10, pool * 100).astype(int)
 file_loaded.to_csv(file, index=False)

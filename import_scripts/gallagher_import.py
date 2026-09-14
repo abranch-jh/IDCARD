@@ -160,7 +160,7 @@ def _build_subject_table(index_df, year, month, cohort_name, watermaze_date):
         "age": np.where(age == "O", 24, 6),
         "sex": "female" if "f" in cohort_name else "male",
         "strain": "Long Evans",
-        "genotype": "Wild Type",
+        "genotype": "WT",
         "watermaze_date": watermaze_date,
         "calculated_index": index_df["IDX30_3"],
         "source_id": "CharlesRiver",
@@ -250,7 +250,7 @@ def load_gallagher_long(base_path):
         cohort_key = f"{Path(folder).parent.parent.name}_{cohort_folder}"
         cohort_dfs[cohort_key] = trial_df
         block_by_cohort[cohort_key] = _reshape_block_averages(block_df, subjects)
-        print(f"Loaded {folder} ({len(subjects)} animals)")
+        #print(f"Loaded {folder} ({len(subjects)} animals)")
 
     if not cohort_dfs:
         raise RuntimeError(f"No complete Gallagher cohorts found under {base_path}")
@@ -527,4 +527,4 @@ if all(c in wide_final.columns for c in cue_cols):
 
 outpath = current_directory / "gallagher.csv"
 wide_final.to_csv(outpath, index=False)
-print(f"Wrote {len(wide_final)} animals to {outpath}")
+#print(f"Wrote {len(wide_final)} animals to {outpath}")
