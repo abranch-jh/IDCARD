@@ -123,3 +123,7 @@ Only these columns are read.
 - **`keys/keyFileTrials.csv`** — four-row table (no header) mapping labels (`s_1`, `p_1`, `c_1`, …) to sequential numbers 1–30 and protocol day.
 - **`keys/trial_type_key_gallagher.csv`** — trial number → type, day, suffix, `new_suffix2` (`_1` … `_30`), `protocol_time`.
 - **`shared_keys.json` (Gallagher)** — e.g. `subject_id` → `animal`, `ttr_dist` → `dist_total`; cm / cm/s conversion.
+
+## Citations
+
+Gallagher M, Burwell R, Burchinal M. Severity of spatial learning impairment in aging: development of a learning index for performance in the Morris water maze. Behav Neurosci. 1993 Aug;107(4):618-26. doi: 10.1037//0735-7044.107.4.618. PMID: 8397866.
