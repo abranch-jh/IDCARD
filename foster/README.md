@@ -4,7 +4,9 @@ Shared column naming, key-file formats, combining, and the GUI are in the [proje
 
 ## Overview
 
-Ethovision Morris Water Maze data already in **wide format** (one row per animal). `import_scripts/foster_import.py` loads the prepared table without trial-level reshaping; `combine_data.py` applies `shared_keys.json`.
+Rats included in the Foster Lab dataset are F344 rats tested as part of ongoing studies from 2003 to 2024. Data for each trial are reported as the average of three sequential trials, according to the protocol diagram below. The dataset is limited to male control animals (i.e., animals that received no drug or viral treatments). Some animals were housed in enriched conditions, and others may have received vehicle treatments. Visible-platform (Cue) trials were performed on one day, prior to hidden-platform (spatial acquisition) trials. Only animals judged not to have deficits in acquiring the procedural aspects of the task during the single day of Cue training are included. A probe trial was performed following the final spatial trial. Twenty-four-hour retention for the hidden-platform location was assessed on the following day, preceded by three hidden-platform trials. For probe trials, rats were released from the quadrant opposite the goal and given 60 s of swim time; time and distance in the goal (quadrant 3) and opposite (quadrant 1) quadrants were collected, and a discrimination index was calculated. Ethovision software was used for video capture and analysis of individual trials. Raw data is  **wide format** (one row per animal). `import_scripts/foster_import.py` loads the prepared table without trial-level reshaping; `combine_data.py` applies `shared_keys.json`.
+
+![Foster Protocol Diagram](keys/foster_protocol.png)
 
 ## Folder layout
 
