@@ -4,7 +4,8 @@ Shared column naming, key-file formats, combining, and the GUI are in the [proje
 
 ## Overview
 
-The rats included in the Barnes lab dataset were a part of a Cognitive Aptitude Study using inbred Fischer 344 rats tested over a range of ages. Data were collected with ANYMaze, and selected data was exported into Excel. Raw exports are organized by cohort, protocol day, and trial type (Spatial, Probe, Visible). ANYMaze provides an option to compute search error based on cumulative integrated path length (CIPL) or by custom functions. Use of different search error calculations result in small differences in some per trial measurements. To take advantage of this feature in ANYMaze, data were exported using both CIPL based calculations (raw data columns contain '_cipl' prefix) as well as in the style used by Gallagher, Rapp, Burke, and McQuail labs (based on Gallagher et. al., 1993; time needed to travel straight line path is removed, these raw data columns contain '_ttr' prefix).  
+
+The rats included in the Barnes lab dataset were a part of a Cognitive Aptitude Study using inbred Fischer 344 rats tested across three age groups: 6-7 months old, 15-16 months old, and 23-24 months old (Zempare et al., 2026). Data were collected with ANYMaze, and selected data was exported into Excel. Raw exports are organized by cohort, protocol day, and trial type (Spatial, Probe, Visible). ANYMaze provides an option to compute search error based on corrected integrated path length (CIPL) or by custom functions. Use of different search error calculations result in small differences in some per trial measurements. To take advantage of this feature in ANYMaze, data were exported using both CIPL based calculations (raw data columns contain '_cipl' prefix) as well as in the style used by Gallagher, Rapp, Burke, and McQuail labs (based on Gallagher et. al., 1993; time needed to travel straight line path is removed, these raw data columns contain '_ttr' prefix).
 
 `import_scripts/barnes_import.py` merges per-day raw data CSVs into one wide row per animal and writes `barnes.csv`. Animal IDs are appended with a `.CB` suffix.
 
@@ -111,3 +112,7 @@ Column form: `{Prefix}; {Measure}`
 - **`keys/barnes.json`** — ANYMaze column substrings → internal base names (`Spatial`, `Probe`, `Visible`).
 - **`keys/trial_type_key_barnes.csv`** — sequential trial → type, protocol day, suffix.
 - **`shared_keys.json` (Barnes)** — e.g. `cipl_dist` → `dist_total`.
+
+## Citations
+
+Zempare, M. A., Do, L., Carey, N. J., Nguyen, C. J., Young, K., Guswiler, O., Chawla, M. K., Sinari, S., Billheimer, D., Huentelman, M. J., Trouard, T. P., & Barnes, C. A. (2026). Multidomain cognitive assessment and high-resolution magnetic resonance imaging (MRI) across age in the male Fischer 344 rat. Behavioral Neuroscience, 140(1), 11–27. https://doi.org/10.1037/bne0000637
